@@ -1,0 +1,91 @@
+data_EMPIAR-12104
+#
+#
+loop_
+_em_experiment.id
+_em_experiment.reconstruction_method
+_em_experiment.aggregation_state
+_em_experiment.specimen_type
+Control_TS_006 'TOMOGRAPHY' ? ?
+#
+#
+loop_
+_em_imaging.id
+_em_imaging.microscope_model
+_em_imaging.mode
+_em_imaging.tilt_angle_min
+_em_imaging.tilt_angle_max
+_em_imaging.electron_dose
+_em_imaging.accelerating_voltage
+_em_imaging.illumination_mode
+Control_TS_006 ? 'BRIGHT FIELD' -64.004 39.9862 112.7542 ? ?
+#
+#
+loop_
+_em_tomography.id
+_em_tomography.imaging_id
+_em_tomography.num_tilts
+_em_tomography.tilt_angle_min
+_em_tomography.tilt_angle_max
+Control_TS_006 Control_TS_006 50 -64.00 39.99
+#
+#
+loop_
+_em_imaging_optics.id
+_em_imaging_optics.imaging_id
+_em_imaging_optics.energyfilter_name
+_em_imaging_optics.phase_plate
+Control_TS_006_1 Control_TS_006 ? ?
+#
+#
+loop_
+_em_tomography_specimen.id
+_em_tomography_specimen.fiducial_markers
+_em_tomography_specimen.high_pressure_freezing
+Control_TS_006_specimen ? ?
+#
+#
+loop_
+_em_image_recording.id
+_em_image_recording.imaging_id
+_em_image_recording.num_grids_imaged
+_em_image_recording.num_real_images
+_em_image_recording.detector_mode
+Control_TS_006 Control_TS_006 1 50 COUNTING
+#
+#
+loop_
+_em_image_processing.id
+_em_image_processing.image_recording_id
+Control_TS_006_processing Control_TS_006
+#
+#
+loop_
+_em_3d_reconstruction.id
+_em_3d_reconstruction.image_processing_id
+_em_3d_reconstruction.method
+_em_3d_reconstruction.num_particles
+Control_TS_006 Control_TS_006_processing 'TOMOGRAPHY' 50
+#
+#
+loop_
+_em_software.id
+_em_software.name
+_em_software.category
+_em_software.image_processing_id
+Control_TS_006_software_1 ? 'RECONSTRUCTION' Control_TS_006_processing
+#
+#
+loop_
+_em_map.id
+_em_map.file
+_em_map.format
+_em_map.num_columns
+_em_map.num_rows
+_em_map.num_sections
+_em_map.pixel_spacing_x
+_em_map.pixel_spacing_y
+_em_map.pixel_spacing_z
+_em_map.type
+Control_TS_006_tomogram https://ftp.ebi.ac.uk/empiar/world_availability/12104/data/Control/tomograms/TS_006_aretomo.mrc 'CCP4' 1022 1440 500 13.699999809265137 13.699999809265137 13.699999809265137 'TOMOGRAM'
+#

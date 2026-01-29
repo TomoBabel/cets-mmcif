@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "cets-mmcif"
+version = "0.1.0"
+description = "A package for converting between cryoET standards (CETS) and mmCIF."
+authors = ["Chr1st0p43rR <190404576+Chr1st0p43rR@users.noreply.github.com>", "MiaoMolVolr789"]
+readme = "README.md"
+packages = [{include = "cets_mmcif"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+cets_data_model = { git = "https://github.com/TomoBabel/cets-data-models.git", branch = "entity_id_fields" }
+
+gemmi = "^0.7.3"
+pydantic = "^2.11.7"
+pydantic-settings = "^2.10.1"
+rich = "^13.0.0"
+typer = "^0.17.0"
+
+[tool.poetry.scripts]
+cets-mmcif = "cets_mmcif.cli:cets_mmcif"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
