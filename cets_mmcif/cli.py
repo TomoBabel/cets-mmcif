@@ -37,16 +37,17 @@ def convert_cets_to_mmcif(
             "--mmcif-output", 
             "-o", 
             case_sensitive=False, 
-            help="Path for output mmCIF file. Default is .cache/cets-mmcif."
+            help="Path for output mmCIF directory. Default is output-data/cets-mmcif."
         )
     ] = settings.output_mmcif_directory
 ):
     """
     Convert a CETS dataset to mmCIF format.
+
+    Args:
+        cets_input_path: Path to input CETS JSON file
+        mmcif_output_path: Path for output mmCIF directory
     """
-    
-    logger.info(f"Converting CETS file: {cets_input_path}")
-    logger.info(f"Output mmCIF file: {mmcif_output_path}")
     
     conversion.convert_cets_to_mmcif(
         cets_input_path=cets_input_path,
@@ -73,7 +74,7 @@ def validate_mmcif(
             "--dict-file", 
             "-d", 
             case_sensitive=False, 
-            help="Path to the mmCIF dictionary file for validation. Default is resources/mmcif_pdbx_v50.dic."
+            help="Path to the mmCIF dictionary file for validation."
         )
     ] = settings.validation_dictionary_path
 ):
@@ -81,13 +82,22 @@ def validate_mmcif(
     Validate an mmCIF file using Gemmi's validation.
     """
     
-    logger.info(f"Validating mmCIF file: {mmcif_file} using dictionary: {validation_dict_path}")
+    if not mmcif_file.exists():
+        logger.error(f"mmCIF file not found: {mmcif_file}")
+        raise typer.Exit(code=1)
+    
+    if not validation_dict_path or not validation_dict_path.exists():
+        logger.error(f"Dictionary file not found: {validation_dict_path}")
+        raise typer.Exit(code=1)
+    
+    logger.info(f"Validating mmCIF file: {mmcif_file}")
+    logger.info(f"Using dictionary: {validation_dict_path}")
     
     is_valid, errors = validation.mmcif_validation(mmcif_file, validation_dict_path)
     
     if is_valid:
-        logger.info("mmCIF file is valid.")
+        logger.info("Validation passed.")
     else:
-        logger.error("mmCIF file is invalid. Errors/Warnings:")
+        logger.error("Validation failed.")
         for error in errors:
             logger.error(error)

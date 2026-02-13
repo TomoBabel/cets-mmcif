@@ -17,7 +17,7 @@ class Settings(BaseSettings):
         extra="ignore",
     )
     
-    output_mmcif_directory: Path = Path(__file__).parents[1] / "output_data" / "cets-mmcif"
+    output_mmcif_directory: Path = Path(__file__).parents[1] / "output_data" / "cets_mmcif"
     validation_dictionary_path: Path = Path(__file__).parents[1] / "resources" / "mmcif_pdbx_v50.dic"
 
 

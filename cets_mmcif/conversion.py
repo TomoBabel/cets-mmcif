@@ -1,82 +1,99 @@
+import gemmi
 import json
-import logging
 from pathlib import Path
-from typing import Dict, Any
 
-from cets_mmcif.entities import (
-    experiment, 
-    image_processing, 
-    image_recording, 
-    imaging, 
-    imaging_optics, 
-    map, 
-    reconstruction, 
-    software, 
-    tomography,  
-    tomography_specimen
+from cets_mmcif.extractors import (
+    extract_em_experiment,
+    extract_em_imaging,
+    extract_em_tomography,
+    extract_em_imaging_optics,
+    extract_em_tomography_specimen,
+    extract_em_image_recording,
+    extract_em_image_processing,
+    extract_em_3d_reconstruction,
+    extract_em_software,
+    extract_em_map,
 )
-
-logger = logging.getLogger(__name__)
+from cets_mmcif.serialisers.mmcif_serialiser import serialize_category
+from cets_mmcif.utilities import add_category_separators
 
 
 def convert_cets_to_mmcif(
     cets_input_path: Path,
     mmcif_output_path: Path
-) -> None:
-    """
-    Convert a CETS JSON dataset to mmCIF format.
+):
+    """Convert CETS JSON to mmCIF using extractors and serializers."""
     
-    Args:
-        cets_input_path: Path to input CETS JSON file
-        mmcif_output_path: Path for output mmCIF file
-    """
-    with open(cets_input_path, 'r') as f:
+    # Load CETS data
+    with open(cets_input_path, "r") as f:
         cets_data = json.load(f)
     
-    logger.info(f"Loaded CETS dataset: {cets_data.get('name', 'Unknown')}")
+    dataset_name = cets_data.get("name", "unknown")
+    regions = cets_data.get("regions", [])
     
-    mmcif_content = generate_mmcif_from_cets(cets_data)
+    # Create mmCIF document
+    doc = gemmi.cif.Document()
+    block = doc.add_new_block(dataset_name)
     
+    # Add metadata
+    block.set_pair("_entry.id", dataset_name)
+    block.set_pair("_audit_conform.dict_name", "mmcif_pdbx.dic")
+    block.set_pair("_audit_conform.dict_version", "5.409")
+    block.set_pair("_audit_conform.dict_location",
+                   "http://mmcif.pdb.org/dictionaries/ascii/mmcif_pdbx.dic")
+    
+    # em_experiment
+    experiments = [extract_em_experiment(r, dataset_name) for r in regions]
+    serialize_category(block, experiments)
+    
+    # em_imaging
+    imaging_data = [extract_em_imaging(r, dataset_name) for r in regions]
+    imaging_data = [i for i in imaging_data if i is not None]
+    serialize_category(block, imaging_data)
+    
+    # em_tomography
+    tomography_data = [extract_em_tomography(r) for r in regions]
+    tomography_data = [t for t in tomography_data if t is not None]
+    serialize_category(block, tomography_data)
+    
+    # em_imaging_optics
+    optics_data = [extract_em_imaging_optics(r) for r in regions]
+    serialize_category(block, optics_data)
+    
+    # em_tomography_specimen
+    specimen_data = [extract_em_tomography_specimen(r) for r in regions]
+    serialize_category(block, specimen_data)
+    
+    # em_image_recording
+    recording_data = [extract_em_image_recording(r) for r in regions]
+    serialize_category(block, recording_data)
+    
+    # em_image_processing
+    processing_data = [extract_em_image_processing(r) for r in regions]
+    serialize_category(block, processing_data)
+    
+    # em_3d_reconstruction
+    reconstruction_data = [extract_em_3d_reconstruction(r, dataset_name) for r in regions]
+    reconstruction_data = [rc for rc in reconstruction_data if rc is not None]
+    serialize_category(block, reconstruction_data)
+    
+    # em_software
+    software_data = [extract_em_software(r) for r in regions]
+    serialize_category(block, software_data)
+    
+    # em_map
+    map_data = [extract_em_map(r, dataset_name) for r in regions]
+    map_data = [m for m in map_data if m is not None]
+    serialize_category(block, map_data)
+    
+    # Get mmCIF string and add separators
+    mmcif_string = doc.as_string()
+    mmcif_string = add_category_separators(mmcif_string)
+    
+    # Write to file
     mmcif_output_path.mkdir(parents=True, exist_ok=True)
-    mmcif_output_filepath = mmcif_output_path / f"{cets_data.get('name', 'output')}.cif"
-
-    with open(mmcif_output_filepath, 'w') as f:
-        f.write(mmcif_content)
+    mmcif_output_file = mmcif_output_path / f"{dataset_name}.cif"
+    with open(mmcif_output_file, "w") as f:
+        f.write(mmcif_string)
     
-    logger.info(f"Written mmCIF file: {mmcif_output_filepath}")
-
-
-def generate_mmcif_from_cets(cets_data: Dict[str, Any]) -> str:
-    """
-    Generate mmCIF content from CETS dataset.
-    
-    This function now properly handles multiple regions by generating
-    one loop per category with multiple data rows.
-    
-    Args:
-        cets_data: Parsed CETS JSON data
-        
-    Returns:
-        mmCIF formatted string
-    """
-    mmcif_lines = []
-    
-    dataset_name = cets_data.get('name', 'unknown')
-    mmcif_lines.append(f"data_{dataset_name}")
-    mmcif_lines.append("#")
-    
-    regions = cets_data.get('regions', [])
-    logger.info(f"Processing {len(regions)} region(s)")
-    
-    mmcif_lines.extend(experiment.generate_em_experiment(regions))
-    mmcif_lines.extend(imaging.generate_em_imaging(regions))
-    mmcif_lines.extend(tomography.generate_em_tomography(regions))
-    mmcif_lines.extend(imaging_optics.generate_em_imaging_optics(regions))
-    mmcif_lines.extend(tomography_specimen.generate_em_tomography_specimen(regions))
-    mmcif_lines.extend(image_recording.generate_em_image_recording(regions))
-    mmcif_lines.extend(image_processing.generate_em_image_processing(regions))
-    mmcif_lines.extend(reconstruction.generate_em_3d_reconstruction(regions))
-    mmcif_lines.extend(software.generate_em_software(regions))
-    mmcif_lines.extend(map.generate_em_map(regions))
-    
-    return '\n'.join(mmcif_lines) + '\n'
+    print(f"Written mmCIF file: {mmcif_output_file}")
