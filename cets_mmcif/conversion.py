@@ -1,5 +1,6 @@
 import gemmi
 import json
+import logging
 from pathlib import Path
 
 from cets_mmcif.extractors import (
@@ -13,9 +14,13 @@ from cets_mmcif.extractors import (
     extract_em_3d_reconstruction,
     extract_em_software,
     extract_em_map,
+    extract_em_3d_fitting,
+    extract_em_3d_fitting_list,
 )
 from cets_mmcif.serialisers.mmcif_serialiser import serialize_category
 from cets_mmcif.utilities import add_category_separators
+
+logger = logging.getLogger(__name__)
 
 
 def convert_cets_to_mmcif(
@@ -23,77 +28,86 @@ def convert_cets_to_mmcif(
     mmcif_output_path: Path
 ):
     """Convert CETS JSON to mmCIF using extractors and serializers."""
-    
-    # Load CETS data
+
     with open(cets_input_path, "r") as f:
         cets_data = json.load(f)
-    
+
     dataset_name = cets_data.get("name", "unknown")
     regions = cets_data.get("regions", [])
-    
-    # Create mmCIF document
+
     doc = gemmi.cif.Document()
     block = doc.add_new_block(dataset_name)
-    
-    # Add metadata
+
     block.set_pair("_entry.id", dataset_name)
     block.set_pair("_audit_conform.dict_name", "mmcif_pdbx.dic")
     block.set_pair("_audit_conform.dict_version", "5.409")
     block.set_pair("_audit_conform.dict_location",
                    "http://mmcif.pdb.org/dictionaries/ascii/mmcif_pdbx.dic")
-    
-    # em_experiment
-    experiments = [extract_em_experiment(r, dataset_name) for r in regions]
+
+    experiments = []
+    imaging_data = []
+    tomography_data = []
+    optics_data = []
+    specimen_data = []
+    recording_data = []
+    processing_data = []
+    reconstruction_data = []
+    software_data = []
+    map_data = []
+    fitting_data = []
+    fitting_list_data = []
+
+    for region_index, region in enumerate(regions, start=1):
+        experiments.append(extract_em_experiment(region, dataset_name, region_index))
+
+        imaging = extract_em_imaging(region, dataset_name, region_index)
+        if imaging:
+            imaging_data.append(imaging)
+
+        tomography = extract_em_tomography(region, region_index)
+        if tomography:
+            tomography_data.append(tomography)
+
+        optics_data.append(extract_em_imaging_optics(region, region_index))
+        specimen_data.append(extract_em_tomography_specimen(region, region_index))
+        recording_data.append(extract_em_image_recording(region, region_index))
+        processing_data.append(extract_em_image_processing(region, region_index))
+
+        reconstruction = extract_em_3d_reconstruction(region, dataset_name, region_index)
+        if reconstruction:
+            reconstruction_data.append(reconstruction)
+
+        software_data.append(extract_em_software(region, region_index))
+
+        map_item = extract_em_map(region, dataset_name, region_index)
+        if map_item:
+            map_data.append(map_item)
+
+        fitting = extract_em_3d_fitting(region, dataset_name, region_index)
+        if fitting:
+            fitting_data.append(fitting)
+
+        fitting_list_data.extend(extract_em_3d_fitting_list(region, region_index))
+
     serialize_category(block, experiments)
-    
-    # em_imaging
-    imaging_data = [extract_em_imaging(r, dataset_name) for r in regions]
-    imaging_data = [i for i in imaging_data if i is not None]
     serialize_category(block, imaging_data)
-    
-    # em_tomography
-    tomography_data = [extract_em_tomography(r) for r in regions]
-    tomography_data = [t for t in tomography_data if t is not None]
     serialize_category(block, tomography_data)
-    
-    # em_imaging_optics
-    optics_data = [extract_em_imaging_optics(r) for r in regions]
     serialize_category(block, optics_data)
-    
-    # em_tomography_specimen
-    specimen_data = [extract_em_tomography_specimen(r) for r in regions]
     serialize_category(block, specimen_data)
-    
-    # em_image_recording
-    recording_data = [extract_em_image_recording(r) for r in regions]
     serialize_category(block, recording_data)
-    
-    # em_image_processing
-    processing_data = [extract_em_image_processing(r) for r in regions]
     serialize_category(block, processing_data)
-    
-    # em_3d_reconstruction
-    reconstruction_data = [extract_em_3d_reconstruction(r, dataset_name) for r in regions]
-    reconstruction_data = [rc for rc in reconstruction_data if rc is not None]
     serialize_category(block, reconstruction_data)
-    
-    # em_software
-    software_data = [extract_em_software(r) for r in regions]
     serialize_category(block, software_data)
-    
-    # em_map
-    map_data = [extract_em_map(r, dataset_name) for r in regions]
-    map_data = [m for m in map_data if m is not None]
     serialize_category(block, map_data)
-    
-    # Get mmCIF string and add separators
+    serialize_category(block, fitting_data)
+    serialize_category(block, fitting_list_data)
+
     mmcif_string = doc.as_string()
     mmcif_string = add_category_separators(mmcif_string)
-    
-    # Write to file
+
     mmcif_output_path.mkdir(parents=True, exist_ok=True)
     mmcif_output_file = mmcif_output_path / f"{dataset_name}.cif"
     with open(mmcif_output_file, "w") as f:
-        f.write(mmcif_string)
-    
-    print(f"Written mmCIF file: {mmcif_output_file}")
+        f.write(mmcif_string + "\n")
+
+    logger.info(f"Written mmCIF file: {mmcif_output_file}")

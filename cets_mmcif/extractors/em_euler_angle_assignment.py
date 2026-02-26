@@ -2,24 +2,13 @@ from typing import Dict, Any
 from cets_mmcif.models.categories import EmEulerAngleAssignment
 
 
-def extract_em_euler_angle_assignment(region: Dict[str, Any]) -> EmEulerAngleAssignment:
-    """
-    Extract em_euler_angle_assignment data.
-    
-    Args:
-        region: CETS region dictionary
-        
-    Returns:
-        EmEulerAngleAssignment model instance
-    
-    Note:
-        Data not in CETS - can be populated from definition file.
-    """
-    region_id = region.get("id", "1")
-    
+def extract_em_euler_angle_assignment(
+    region: Dict[str, Any],
+    region_index: int
+) -> EmEulerAngleAssignment:
     return EmEulerAngleAssignment(
-        id=f"{region_id}_euler_1",
-        image_processing_id=f"{region_id}_processing",
+        id=region_index,
+        image_processing_id=region_index,
         type=None,
         order=None,
         proj_matching_num_projections=None,

@@ -6,21 +6,16 @@ _audit_conform.dict_version 5.409
 _audit_conform.dict_location http://mmcif.pdb.org/dictionaries/ascii/mmcif_pdbx.dic
 #
 _em_experiment.entry_id EMPIAR-12104
-_em_experiment.id Control_TS_006
+_em_experiment.id 1
 _em_experiment.reconstruction_method TOMOGRAPHY
 _em_experiment.aggregation_state ?
-_em_experiment.specimen_type ?
 _em_experiment.entity_assembly_id ?
 #
 _em_imaging.entry_id EMPIAR-12104
-_em_imaging.id Control_TS_006
+_em_imaging.id 1
 _em_imaging.astigmatism ?
 _em_imaging.electron_beam_tilt_params ?
 _em_imaging.residual_tilt ?
-_em_imaging.sample_support_id ?
-_em_imaging.detector_id ?
-_em_imaging.scans_id ?
-_em_imaging.microscope_id ?
 _em_imaging.microscope_model ?
 _em_imaging.specimen_holder_type ?
 _em_imaging.specimen_holder_model ?
@@ -39,9 +34,6 @@ _em_imaging.tilt_angle_max 39.9862
 _em_imaging.nominal_magnification ?
 _em_imaging.calibrated_magnification ?
 _em_imaging.electron_source ?
-_em_imaging.electron_dose 112.7542
-_em_imaging.energy_filter ?
-_em_imaging.energy_window ?
 _em_imaging.citation_id ?
 _em_imaging.temperature ?
 _em_imaging.detector_distance ?
@@ -62,16 +54,16 @@ _em_tomography.axis2_angle_increment ?
 _em_tomography.axis2_max_angle ?
 _em_tomography.axis2_min_angle ?
 _em_tomography.dual_tilt_axis_rotation ?
-_em_tomography.id Control_TS_006
-_em_tomography.imaging_id Control_TS_006
+_em_tomography.id 1
+_em_tomography.imaging_id 1
 #
 _em_imaging_optics.chr_aberration_corrector ?
 _em_imaging_optics.energyfilter_lower ?
 _em_imaging_optics.energyfilter_slit_width ?
 _em_imaging_optics.energyfilter_name ?
 _em_imaging_optics.energyfilter_upper ?
-_em_imaging_optics.id Control_TS_006_1
-_em_imaging_optics.imaging_id Control_TS_006
+_em_imaging_optics.id 1
+_em_imaging_optics.imaging_id 1
 _em_imaging_optics.phase_plate ?
 _em_imaging_optics.sph_aberration_corrector ?
 _em_imaging_optics.details ?
@@ -80,12 +72,12 @@ _em_tomography_specimen.cryo_protectant ?
 _em_tomography_specimen.details ?
 _em_tomography_specimen.fiducial_markers ?
 _em_tomography_specimen.high_pressure_freezing ?
-_em_tomography_specimen.id Control_TS_006
+_em_tomography_specimen.id 1
 _em_tomography_specimen.sectioning ?
 _em_tomography_specimen.specimen_id ?
 #
-_em_image_recording.id Control_TS_006
-_em_image_recording.imaging_id Control_TS_006
+_em_image_recording.id 1
+_em_image_recording.imaging_id 1
 _em_image_recording.average_exposure_time ?
 _em_image_recording.avg_electron_dose_per_subtomogram ?
 _em_image_recording.avg_electron_dose_per_image ?
@@ -96,12 +88,12 @@ _em_image_recording.num_diffraction_images ?
 _em_image_recording.num_grids_imaged ?
 _em_image_recording.num_real_images 50
 #
-_em_image_processing.id Control_TS_006_processing
-_em_image_processing.image_recording_id Control_TS_006
+_em_image_processing.id 1
+_em_image_processing.image_recording_id 1
 _em_image_processing.details ?
 #
 _em_3d_reconstruction.entry_id EMPIAR-12104
-_em_3d_reconstruction.id Control_TS_006
+_em_3d_reconstruction.id 1
 _em_3d_reconstruction.method TOMOGRAPHY
 _em_3d_reconstruction.algorithm ?
 _em_3d_reconstruction.citation_id ?
@@ -109,22 +101,19 @@ _em_3d_reconstruction.details ?
 _em_3d_reconstruction.resolution ?
 _em_3d_reconstruction.resolution_method ?
 _em_3d_reconstruction.magnification_calibration ?
-_em_3d_reconstruction.ctf_correction_method ?
 _em_3d_reconstruction.nominal_pixel_size ?
 _em_3d_reconstruction.actual_pixel_size ?
 _em_3d_reconstruction.num_particles 50
 _em_3d_reconstruction.euler_angles_details ?
 _em_3d_reconstruction.num_class_averages ?
-_em_3d_reconstruction.software ?
-_em_3d_reconstruction.fsc_type ?
 _em_3d_reconstruction.refinement_type ?
-_em_3d_reconstruction.image_processing_id Control_TS_006_processing
+_em_3d_reconstruction.image_processing_id 1
 _em_3d_reconstruction.symmetry_type ?
 #
 _em_software.category RECONSTRUCTION
 _em_software.details ?
-_em_software.id Control_TS_006_software_1
-_em_software.image_processing_id Control_TS_006_processing
+_em_software.id 1
+_em_software.image_processing_id 1
 _em_software.fitting_id ?
 _em_software.imaging_id ?
 _em_software.name ?
@@ -149,9 +138,8 @@ _em_map.dimensions_row 1440
 _em_map.dimensions_sec 500
 _em_map.endian_type ?
 _em_map.file 'https://ftp.ebi.ac.uk/empiar/world_availability/12104/data/Control/tomograms/TS_006_aretomo.mrc'
-_em_map.original_file ?
 _em_map.format CCP4
-_em_map.id Control_TS_006_tomogram
+_em_map.id 1
 _em_map.partition 1
 _em_map.entry_id EMPIAR-12104
 _em_map.label ?
@@ -165,9 +153,9 @@ _em_map.pixel_spacing_x 13.699999809265137
 _em_map.pixel_spacing_y 13.699999809265137
 _em_map.pixel_spacing_z 13.699999809265137
 _em_map.size_kb ?
-_em_map.spacing_x 13.699999809265137
-_em_map.spacing_y 13.699999809265137
-_em_map.spacing_z 13.699999809265137
+_em_map.spacing_x 1022
+_em_map.spacing_y 1440
+_em_map.spacing_z 500
 _em_map.statistics_average ?
 _em_map.statistics_maximum ?
 _em_map.statistics_minimum ?

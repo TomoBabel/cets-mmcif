@@ -2,25 +2,15 @@ from typing import Dict, Any
 from cets_mmcif.models.categories import EmSoftware
 
 
-def extract_em_software(region: Dict[str, Any]) -> EmSoftware:
-    """
-    Extract em_software data from a CETS region.
-    
-    Args:
-        region: CETS region dictionary
-        
-    Returns:
-        EmSoftware model instance
-    """
-    region_id = region.get("id", "1")
-    
-    # TODO: another placeholder, 
-    # since software information is not in CETS
+def extract_em_software(
+    region: Dict[str, Any],
+    region_index: int
+) -> EmSoftware:
     return EmSoftware(
-        id=f"{region_id}_software_1",
+        id=region_index,
         name=None,
-        category="RECONSTRUCTION",  # Default category
-        image_processing_id=f"{region_id}_processing",
+        category="RECONSTRUCTION",
+        image_processing_id=region_index,
         version=None,
         details=None
     )

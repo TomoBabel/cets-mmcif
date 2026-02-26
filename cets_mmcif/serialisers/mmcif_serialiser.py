@@ -74,16 +74,16 @@ def serialize_category(
     if hasattr(model_class, "Config") and hasattr(model_class.Config, "fields"):
         field_mappings = model_class.Config.fields
     
+    mmcif_field_names = [get_mmcif_field_name(field_mappings, f) for f in field_names]
+
     if len(categories) == 1:
         instance = categories[0]
-        for field_name in field_names:
-            mmcif_field = get_mmcif_field_name(field_mappings, field_name)
+        for field_name, mmcif_field in zip(field_names, mmcif_field_names):
             value = getattr(instance, field_name)
             block.set_pair(f"_{category}.{mmcif_field}", format_value(value))
     else:
-        mmcif_field_names = [get_mmcif_field_name(f) for f in field_names]
         loop = block.init_loop(f"_{category}.", mmcif_field_names)
-        
+
         for instance in categories:
             row = [format_value(getattr(instance, field_name)) for field_name in field_names]
             loop.add_row(row)

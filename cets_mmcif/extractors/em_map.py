@@ -25,7 +25,8 @@ def _extract_pixel_spacing(tomogram: Dict[str, Any]) -> Optional[List[float]]:
 
 def extract_em_map(
     region: Dict[str, Any],
-    dataset_name: str
+    dataset_name: str,
+    region_index: int
 ) -> Optional[EmMap]:
     """
     Extract em_map data from a CETS region.
@@ -62,17 +63,14 @@ def extract_em_map(
     # File info
     file_path = tomogram.get("path", "")
     map_format = "CCP4" if file_path.endswith(".mrc") else None
-    map_id = tomogram.get("id", "1")
-    
     
     return EmMap(
         entry_id=dataset_name,
-        id=map_id,
+        id=region_index, 
         file=file_path,
         format=map_format,
-        type="primary map",  # TODO: use proper enum value
-        
-        # Mandatory fields
+        type="primary map",
+
         axis_order_fast="X",
         axis_order_medium="Y",
         axis_order_slow="Z",
@@ -82,27 +80,21 @@ def extract_em_map(
         cell_alpha=90.0,
         cell_beta=90.0,
         cell_gamma=90.0,
-        data_type=None, # TODO: ?
+        data_type=None,
         dimensions_col=width,
         dimensions_row=height,
         dimensions_sec=depth,
-        endian_type=None, # TODO: check
+        endian_type=None,
         origin_col=0,
         origin_row=0,
         origin_sec=0,
         partition=1,
         size_kb=None,
-        spacing_x=spacing_x,
-        spacing_y=spacing_y,
-        spacing_z=spacing_z,
-        symmetry_space_group=1,
-        
-        # Deprecated fields 
-        # TODO: remove these?
+        spacing_x=width,
+        spacing_y=height,
+        spacing_z=depth,
         pixel_spacing_x=spacing_x,
         pixel_spacing_y=spacing_y,
         pixel_spacing_z=spacing_z,
-        num_columns=width,
-        num_rows=height,
-        num_sections=depth
+        symmetry_space_group=1,
     )

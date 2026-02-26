@@ -4,33 +4,19 @@ from cets_mmcif.models.categories import EmImageScans
 
 def extract_em_image_scans(
     region: Dict[str, Any],
-    dataset_name: str
+    dataset_name: str,
+    region_index: int
 ) -> EmImageScans:
-    """
-    Extract em_image_scans data from a CETS region.
-    
-    Args:
-        region: CETS region dictionary
-        dataset_name: Entry ID for the dataset
-        
-    Returns:
-        EmImageScans model instance
-    
-    Note:
-        Can be populated from definition file if needed.
-    """
-    region_id = region.get("id", "1")
-    
     tilt_series_list = region.get("tilt_series", [])
     number_digital_images = None
     if tilt_series_list:
         images = tilt_series_list[0].get("images", [])
         number_digital_images = len(images) if images else None
-    
+
     return EmImageScans(
         entry_id=dataset_name,
-        id=f"{region_id}_scans_1",
-        image_recording_id=region_id,
+        id=region_index,
+        image_recording_id=region_index,
         number_digital_images=number_digital_images,
         scanner_model=None,
         sampling_size=None,
