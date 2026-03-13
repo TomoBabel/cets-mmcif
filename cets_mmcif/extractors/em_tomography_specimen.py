@@ -1,16 +1,14 @@
-from typing import Dict, Any
 from cets_mmcif.models.categories import EmTomographySpecimen
 
 
 def extract_em_tomography_specimen(
-    region: Dict[str, Any],
     region_index: int
 ) -> EmTomographySpecimen:
     """
     Extract em_tomography_specimen data from a CETS region.
     
     Args:
-        region: CETS region dictionary
+        region_index: CETS region index
         
     Returns:
         EmTomographySpecimen model instance

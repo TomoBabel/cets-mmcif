@@ -19,6 +19,7 @@ from .em_3d_fitting_list import extract_em_3d_fitting_list
 from .em_software import extract_em_software
 from .em_map import extract_em_map
 from .em_image_scans import extract_em_image_scans
+from .em_specimen import extract_em_specimen
 
 __all__ = [
     'extract_em_experiment',
@@ -40,4 +41,5 @@ __all__ = [
     'extract_em_software',
     'extract_em_map',
     'extract_em_image_scans',
+    'extract_em_specimen',
 ]

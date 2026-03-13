@@ -69,6 +69,7 @@ def extract_em_map(
     Args:
         region: CETS region dictionary
         dataset_name: Entry ID for the dataset
+        region_index: Index of the region (used for em_map ID)
         
     Returns:
         EmMap model instance, or None if no tomograms

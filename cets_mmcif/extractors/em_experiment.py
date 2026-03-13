@@ -1,4 +1,3 @@
-from typing import Dict, Any
 from cets_mmcif.models.categories import EmExperiment
 
 
@@ -10,7 +9,6 @@ _DEFAULT_AGGREGATION_STATE = "CELL"
 
 
 def extract_em_experiment(
-    region: Dict[str, Any],
     dataset_name: str,
     region_index: int
 ) -> EmExperiment:
@@ -18,8 +16,8 @@ def extract_em_experiment(
     Extract em_experiment data from a CETS region.
     
     Args:
-        region: CETS region dictionary
         dataset_name: Entry ID for the dataset
+        region_index: Index of the region within the dataset
         
     Returns:
         EmExperiment model instance

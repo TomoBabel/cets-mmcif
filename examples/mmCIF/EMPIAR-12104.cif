@@ -68,6 +68,15 @@ _em_imaging_optics.phase_plate ?
 _em_imaging_optics.sph_aberration_corrector ?
 _em_imaging_optics.details ?
 #
+_em_specimen.id 1
+_em_specimen.experiment_id 1
+_em_specimen.concentration ?
+_em_specimen.embedding_applied NO
+_em_specimen.shadowing_applied NO
+_em_specimen.staining_applied NO
+_em_specimen.vitrification_applied YES
+_em_specimen.details ?
+#
 _em_tomography_specimen.cryo_protectant ?
 _em_tomography_specimen.details ?
 _em_tomography_specimen.fiducial_markers ?

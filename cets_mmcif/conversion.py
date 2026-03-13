@@ -13,6 +13,7 @@ from cets_mmcif.extractors import (
     extract_em_image_processing,
     extract_em_3d_reconstruction,
     extract_em_software,
+    extract_em_specimen,
     extract_em_map,
     extract_em_3d_fitting,
     extract_em_3d_fitting_list,
@@ -49,6 +50,7 @@ def convert_cets_to_mmcif(
     tomography_data = []
     optics_data = []
     specimen_data = []
+    tomo_specimen_data = []
     recording_data = []
     processing_data = []
     reconstruction_data = []
@@ -58,7 +60,9 @@ def convert_cets_to_mmcif(
     fitting_list_data = []
 
     for region_index, region in enumerate(regions, start=1):
-        experiments.append(extract_em_experiment(region, dataset_name, region_index))
+        experiments.append(extract_em_experiment(dataset_name, region_index))
+
+        specimen_data.append(extract_em_specimen(region_index))
 
         imaging = extract_em_imaging(region, dataset_name, region_index)
         if imaging:
@@ -69,7 +73,7 @@ def convert_cets_to_mmcif(
             tomography_data.append(tomography)
 
         optics_data.append(extract_em_imaging_optics(region, region_index))
-        specimen_data.append(extract_em_tomography_specimen(region, region_index))
+        tomo_specimen_data.append(extract_em_tomography_specimen(region_index))
         recording_data.append(extract_em_image_recording(region, region_index))
         processing_data.append(extract_em_image_processing(region, region_index))
 
@@ -94,6 +98,7 @@ def convert_cets_to_mmcif(
     serialize_category(block, tomography_data)
     serialize_category(block, optics_data)
     serialize_category(block, specimen_data)
+    serialize_category(block, tomo_specimen_data)
     serialize_category(block, recording_data)
     serialize_category(block, processing_data)
     serialize_category(block, reconstruction_data)

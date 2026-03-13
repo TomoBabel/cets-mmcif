@@ -93,6 +93,19 @@ class EmTomographySpecimen(BaseModel):
     specimen_id: Optional[str] = None
 
 
+class EmSpecimen(BaseModel):
+    """Data model for _em_specimen category."""
+ 
+    id: int
+    experiment_id: int
+    concentration: Optional[float] = None
+    embedding_applied: bool = False
+    shadowing_applied: bool = False
+    staining_applied: bool = False
+    vitrification_applied: bool = True
+    details: Optional[str] = None
+
+
 class EmFocusedIonBeam(BaseModel):
     """Data model for _em_focused_ion_beam category."""
     

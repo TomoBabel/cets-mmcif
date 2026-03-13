@@ -13,6 +13,7 @@ def extract_em_imaging(
     Args:
         region: CETS region dictionary
         dataset_name: Entry ID for the dataset
+        region_index: Index of the region (1-based)
         
     Returns:
         EmImaging model instance, or None if no tilt series data
