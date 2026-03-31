@@ -15,7 +15,7 @@ pydantic = "^2.11.7"
 pydantic-settings = "^2.10.1"
 rich = "^13.0.0"
 typer = "^0.17.0"
-pdbe-mmcif-validator = { git = "https://github.com/Chr1st0p43rR/mmcif-validator-fork.git", branch = "fix_metadata_completeness_import", subdirectory = "vscode-extension/python-script" }
+pdbe-mmcif-validator = { git = "https://github.com/PDBeurope/mmcif-validator.git", branch = "main", subdirectory = "vscode-extension/python-script" }
 pytest = "^9.0.2"
 
 [tool.poetry.scripts]
