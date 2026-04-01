@@ -26,4 +26,6 @@ and optionally, an output location can be specified, for example:
 | `--help` | — | — | Show help. | — |
 
 ### Validation
-...still to come...
+To validate an mmCIF file:
+
+    poetry run cets-mmcif validate -f <path_to_input_mmCIF_file>
