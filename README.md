@@ -46,7 +46,6 @@ To validate an mmCIF file:
         gemmi checks structural conformance against the DDL2 schema
         PDBe validator does submission-readiness checks. This validator performs deeper deposition-readiness checks than gemmi, including foreign key integrity, enumeration validation, composite key, validation, and data type checking against the mmCIF dictionary.
 
-
 #### Example printout
 [15:50:02] INFO     cets_mmcif.cli - [15:50:02] - INFO - --- gemmi validation ---                                cli.py:96
            INFO     cets_mmcif.cli - [15:50:02] - INFO - gemmi validation passed.                                cli.py:99
